@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexique Interactif du Tarot</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 600px; margin: 30px auto; padding: 20px; background-color: #f5f5f7; }
+        h2 { color: #1d1d1f; border-bottom: 2px solid #007AFF; padding-bottom: 10px; }
+        .liste-termes { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; }
+        .terme-bouton { background-color: #007AFF; color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .terme-bouton:hover { background-color: #0056b3; }
+        #affichage-definition { margin-top: 30px; padding: 20px; background-color: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); min-height: 80px; border-left: 5px solid #007AFF; }
+        .titre-def { color: #007AFF; font-weight: bold; display: block; margin-bottom: 8px; font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <h2>Lexique du Tarot</h2>
+    <p>Sélectionnez un mot pour voir sa définition :</p>
+    
+    <div class="liste-termes">
+        <button class="terme-bouton" onclick="afficher('Chien')">Le Chien</button>
+        <button class="terme-bouton" onclick="afficher('Petit')">Le Petit</button>
+        <button class="terme-bouton" onclick="afficher('Poignee')">La Poignée</button>
+        <button class="terme-bouton" onclick="afficher('Excuse')">L'Excuse</button>
+        <button class="terme-bouton" onclick="afficher('Ecart')">L'Écart</button>
+        <button class="terme-bouton" onclick="afficher('Atout')">L'Atout</button>
+    </div>
+
+    <div id="affichage-definition">
+        <span id="contenu-def"><em>La définition s'affichera ici...</em></span>
+    </div>
+
+    <script>
+        const dico = {
+            'Chien': 'Les 6 cartes cachées distribuées au début. Le preneur les montre et les remplace par 6 cartes de son jeu (sauf en Garde Sans ou Contre).',
+            'Petit': 'L\'Atout n°1. C\'est la carte la plus basse des atouts, mais elle rapporte beaucoup si elle est emmenée au bout du dernier pli.',
+            'Poignee': 'Annonce faite lorsqu\'un joueur possède beaucoup d\'atouts (Simple: 10, Double: 13, Triple: 15 à quatre joueurs).',
+            'Excuse': 'La carte avec le joueur de luth. Elle ne permet pas de gagner un pli mais permet de ne pas perdre la carte jouée.',
+            'Ecart': 'Les 6 cartes choisies par le preneur pour remplacer celles du Chien. On ne peut y mettre ni Rois ni Atouts (sauf exception).',
+            'Atout': 'Les 21 cartes numérotées qui permettent de couper n\'importe quelle couleur pour remporter le pli.'
+        };
+
+        function afficher(mot) {
+            const zone = document.getElementById('contenu-def');
+            zone.innerHTML = '<span class="titre-def">' + mot + '</span>' + dico[mot];
+        }
+    </script>
+
+</body>
+</html>
