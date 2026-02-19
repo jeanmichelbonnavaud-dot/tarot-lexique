@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Liste de Courses</title>
+    <style>
+        /* body { font-family: sans-serif; max-width: 400px; margin: 50px auto; padding: 20px; background: #f4f4f9; }*/
+        body {
+            font-family: sans-serif;
+            max-width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #ffffff;
+
+            /* --- LE CADRE VISIBLE --- */
+            border: 1px solid #ffffff;
+            ;
+            /* Un trait de 2px, continu, de couleur anthracite */
+
+            /* --- LES EFFETS DE STYLE --- */
+            border-radius: 15px;
+            /* Les coins du cadre seront arrondis */
+            box-shadow: 10px 10px 0px #bebebe;
+            /* Une ombre "bloc" pour un style rétro */
+        }
+
+
+
+
+        h2 {
+            color: #000000;
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 20px;
+            border: 1px solid #080101;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background: #0b08d8;
+            color: white;
+            border: 2px solid #d9cdcd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: white;
+            margin-bottom: 5px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li.checked {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .delete {
+            margin-left: auto;
+            color: #ff4444;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>🛒 Liste de Courses</h2>
+
+    <div class="input-group">
+        <input type="text" id="itemInput" placeholder="Ajouter un article...">
+        <button onclick="addItem()">Ajouter</button>
+    </div>
+
+    <ul id="shoppingList"></ul>
+
+    <script>
+        const input = document.getElementById('itemInput');
+        const listContainer = document.getElementById('shoppingList');
+
+        // 1. Charger la liste au démarrage
+
+        document.addEventListener('DOMContentLoaded', loadList);
+        function addItem() {
+            if (input.value.trim() === '') return;
+            createListItem(input.value, false);
+            saveData();
+            input.value = '';
+        }
+
+        function createListItem(text, isChecked) {
+            const li = document.createElement('li');
+            if (isChecked) li.classList.add('checked');
+
+            li.innerHTML = `
+                <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="toggleItem(this)">
+                <span>${text}</span>
+                <span class="delete" onclick="removeItem(this)">×</span>
+            `;
+            listContainer.appendChild(li);
+        }
+
+        function toggleItem(checkbox) {
+            checkbox.parentElement.classList.toggle('checked');
+            saveData();
+        }
+
+        function removeItem(btn) {
+            btn.parentElement.remove();
+            saveData();
+        }
+
+        // 2. Sauvegarder dans le navigateur
+        function saveData() {
+            const items = [];
+            document.querySelectorAll('li').forEach(li => {
+                items.push({
+                    text: li.querySelector('span').innerText,
+                    checked: li.classList.contains('checked')
+                });
+            });
+            localStorage.setItem('maListeDeCourses', JSON.stringify(items));
+        }
+
+        // 3. Récupérer les données
+        function loadList() {
+            const savedData = localStorage.getItem('maListeDeCourses');
+            if (savedData) {
+                JSON.parse(savedData).forEach(item => {
+                    createListItem(item.text, item.checked);
+                });
+            }
+        }
+
+        // Permettre d'ajouter avec la touche "Entrée"
+        input.addEventListener("keypress", (e) => { if (e.key === "Enter") addItem(); });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexique du Tarot de France</title>
+    <style>
+        /* Variables pour changer les couleurs facilement partout */
+        :root {
+            --primary: #6366f1;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .liste-termes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .terme-bouton {
+            background-color: white;
+            color: var(--text);
+            border: 2px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .terme-bouton:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Classe ajoutée par le JavaScript quand on clique */
+        .terme-bouton.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        #affichage-definition {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            min-height: 120px;
+            border-top: 6px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .titre-def {
+            color: var(--primary);
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Le Tarot</h2>
+    <p class="subtitle">Maîtrisez le jargon des parieurs</p>
+
+    <div class="liste-termes">
+        <button class="terme-bouton" onclick="afficher(this, 'Chien')">Le Chien</button>
+        <button class="terme-bouton" onclick="afficher(this, 'Petit')">Le Petit</button>
+        <button class="terme-bouton" onclick="afficher(this, 'Poignee')">La Poignée</button>
+        <button class="terme-bouton" onclick="afficher(this, 'Excuse')">L'Excuse</button>
+        <button class="terme-bouton" onclick="afficher(this, 'Ecart')">L'Écart</button>
+        <button class="terme-bouton" onclick="afficher(this, 'Atout')">L'Atout</button>
+    </div>
+
+    <div id="affichage-definition">
+        <span id="contenu-def"><em>Cliquez sur un terme pour découvrir son secret...</em></span>
+    </div>
+
+    <script>
+        const dico = {
+            'Chien': 'Les 6 cartes cachées distribuées au début. Le preneur les montre et les remplace par 6 cartes de son jeu (sauf en Garde Sans ou Contre).',
+            'Petit': 'L\'Atout n°1. C\'est la carte la plus basse des atouts, mais elle rapporte gros si elle est emmenée au bout du dernier pli.',
+            'Poignee': 'Annonce faite lorsqu\'un joueur possède beaucoup d\'atouts. Elle permet de marquer des points bonus.',
+            'Excuse': 'La carte avec le joueur de luth. Elle joue le rôle de joker et permet de ne pas perdre un pli important.',
+            'Ecart': 'Les cartes mises de côté par le preneur. On y cache ses points sans y mettre de Rois ni d\'Atouts.',
+            'Atout': 'La force de frappe du jeu. Les 21 cartes qui permettent de "couper" les couleurs classiques.'
+        };
+
+        function afficher(btn, mot) {
+            // 1. On enlève la couleur "active" de tous les boutons
+            document.querySelectorAll('.terme-bouton').forEach(b => b.classList.remove('active'));
+
+            // 2. On ajoute la couleur au bouton cliqué
+            btn.classList.add('active');
+
+            // 3. On affiche la définition avec une petite animation
+            const zone = document.getElementById('contenu-def');
+            zone.style.opacity = 0;
+
+            setTimeout(() => {
+                zone.innerHTML = `<span class="titre-def">${mot}</span> ${dico[mot]}`;
+                zone.style.opacity = 1;
+            }, 150);
+        }
+    </script>
+
+</body>
+
+</html>
