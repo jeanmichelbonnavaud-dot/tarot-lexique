@@ -4,137 +4,609 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexique du Tarot de France</title>
+    <title>Expert Tarot Master - Version Intégrale</title>
     <style>
-        /* Variables pour changer les couleurs facilement partout */
         :root {
-            --primary: #6366f1;
-            --bg: #f8fafc;
-            --text: #1e293b;
+            --primary: #d32f2f;
+            --primary-light: #ff5252;
+            --bg-overlay: rgba(15, 15, 15, 0.96);
+            --text: #f5f5f5;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            max-width: 700px;
-            margin: 50px auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
             padding: 20px;
-            background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            background-color: #111;
+            background-image: url('fond-tarot.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        h2 {
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--bg-overlay);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid #444;
+        }
+
+        h1 {
             text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-
-        .liste-termes {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-
-        .terme-bouton {
-            background-color: white;
-            color: var(--text);
-            border: 2px solid #e2e8f0;
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .terme-bouton:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
-        }
-
-        /* Classe ajoutée par le JavaScript quand on clique */
-        .terme-bouton.active {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        #affichage-definition {
-            background-color: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            min-height: 120px;
-            border-top: 6px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .titre-def {
-            color: var(--primary);
-            font-size: 1.5rem;
-            display: block;
-            margin-bottom: 10px;
+            color: var(--primary-light);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 5px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px black;
+        }
+
+        /* Menu Navigation */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-menu button {
+            padding: 12px 18px;
+            border: 2px solid var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .nav-menu button.active-btn {
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary-light);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .active {
+            display: block !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Tableaux */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #222;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+
+        /* Blocs Théorie */
+        .theory-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            margin-top: 20px;
+        }
+
+        .theory-box h3 {
+            color: var(--primary-light);
+            margin-top: 0;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .alert {
+            background: rgba(139, 0, 0, 0.4);
+            border-left: 5px solid var(--primary-light);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        /* Calculateur & Correction Radios */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #555;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #bbb;
+            font-size: 0.9em;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            background: #222;
+            padding: 12px;
+            border-radius: 6px;
+            justify-content: flex-start;
+            border: 1px solid #444;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: var(--primary-light);
+        }
+
+        .radio-item span {
+            font-size: 0.95em;
+            color: #eee;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #666;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+
+        .player-name {
+            background: transparent;
+            border: none;
+            color: var(--primary-light);
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+            font-size: 1.1em;
+            outline: none;
+        }
+
+        .col-j5 {
+            display: none;
         }
     </style>
 </head>
 
 <body>
 
-    <h2>Le Tarot</h2>
-    <p class="subtitle">Maîtrisez le jargon des parieurs</p>
+    <div class="container">
+        <h1>Le Temple du Tarot</h1>
 
-    <div class="liste-termes">
-        <button class="terme-bouton" onclick="afficher(this, 'Chien')">Le Chien</button>
-        <button class="terme-bouton" onclick="afficher(this, 'Petit')">Le Petit</button>
-        <button class="terme-bouton" onclick="afficher(this, 'Poignee')">La Poignée</button>
-        <button class="terme-bouton" onclick="afficher(this, 'Excuse')">L'Excuse</button>
-        <button class="terme-bouton" onclick="afficher(this, 'Ecart')">L'Écart</button>
-        <button class="terme-bouton" onclick="afficher(this, 'Atout')">L'Atout</button>
-    </div>
+        <div class="nav-menu">
+            <button onclick="openTab('valeur')" id="btn-valeur">Théorie & Valeurs</button>
+            <button onclick="openTab('distrib')" id="btn-distrib">Distribution</button>
+            <button onclick="openTab('regles')" id="btn-regles">Règles & Poignées</button>
+            <button onclick="openTab('calcul')" id="btn-calcul">Calculateur</button>
+            <button onclick="openTab('scores')" id="btn-scores">Tableau des Scores</button>
+        </div>
 
-    <div id="affichage-definition">
-        <span id="contenu-def"><em>Cliquez sur un terme pour découvrir son secret...</em></span>
+        <div id="valeur" class="section">
+            <h2>Valeurs des Cartes & Théorie du Calcul</h2>
+            <table>
+                <tr>
+                    <th>Carte</th>
+                    <th>Points Seule</th>
+                    <th>Avec 1 Basse</th>
+                    <th>Objectif</th>
+                </tr>
+                <tr>
+                    <td>Bouts (21, 1, Excuse)</td>
+                    <td>4,5</td>
+                    <td>5,0</td>
+                    <td>3 Bouts : 36 pts</td>
+                </tr>
+                <tr>
+                    <td>Rois</td>
+                    <td>4,5</td>
+                    <td>5,0</td>
+                    <td>2 Bouts : 41 pts</td>
+                </tr>
+                <tr>
+                    <td>Dames</td>
+                    <td>3,5</td>
+                    <td>4,0</td>
+                    <td>1 Bout : 51 pts</td>
+                </tr>
+                <tr>
+                    <td>Cavaliers</td>
+                    <td>2,5</td>
+                    <td>3,0</td>
+                    <td>0 Bout : 56 pts</td>
+                </tr>
+                <tr>
+                    <td>Valets / Basses</td>
+                    <td>1,5 / 0,5</td>
+                    <td>2,0 / 1,0</td>
+                    <td>Total : 91 pts</td>
+                </tr>
+            </table>
+
+            <div class="theory-box">
+                <h3>La Formule du Score</h3>
+                <p>Le score d'une donne est calculé comme suit :</p>
+                <ul>
+                    <li><strong>Base fixe :</strong> 25 points.</li>
+                    <li><strong>L'Écart :</strong> (Points faits - Points nécessaires).</li>
+                    <li><strong>Bonus Petit au Bout :</strong> 10 points (multipliables par l'enchère).</li>
+                    <li><strong>Multiplicateur :</strong> Petite (x1), Garde (x2), Garde Sans (x4), Garde Contre (x6).
+                    </li>
+                </ul>
+                <div class="alert"><strong>Calcul :</strong> [(25 + Écart + Petit au Bout) × Coef] + Prime de Poignée.
+                </div>
+            </div>
+
+            <div class="theory-box">
+                <h3>Distribution des Points (Flux)</h3>
+                <p>Le Tarot est un jeu à "somme nulle" (le total des gains et pertes est toujours égal à zéro).</p>
+
+                <strong>Cas 1 : Le Preneur gagne (Contrat rempli)</strong>
+                <ul>
+                    <li><strong>À 4 joueurs :</strong> Les 3 défenseurs donnent le score au preneur. Le preneur gagne 3x
+                        le score.</li>
+                    <li><strong>À 5 joueurs :</strong> Les 3 défenseurs donnent le score. Le preneur gagne 2x le score,
+                        le partenaire appelé gagne 1x le score.</li>
+                </ul>
+
+                <strong>Cas 2 : Le Preneur chute (Challenge raté)</strong>
+                <ul>
+                    <li><strong>À 4 joueurs :</strong> Le preneur donne le score aux 3 défenseurs.</li>
+                    <li><strong>À 5 joueurs :</strong> Le preneur donne 2x le score, le partenaire donne 1x le score.
+                        Les 3 défenseurs reçoivent chacun le score.</li>
+                    <li><strong>Note :</strong> Si le preneur a appelé son propre Roi (Solo), il paie ou reçoit 4x le
+                        score à lui seul.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="distrib" class="section">
+            <h2>Distribution & Sens de Jeu</h2>
+            <table>
+                <tr>
+                    <th>Joueurs</th>
+                    <th>Cartes par main</th>
+                    <th>Le Chien</th>
+                </tr>
+                <tr>
+                    <td>3 Joueurs</td>
+                    <td>24 cartes (par 3)</td>
+                    <td>6 cartes</td>
+                </tr>
+                <tr>
+                    <td>4 Joueurs</td>
+                    <td>18 cartes (par 3)</td>
+                    <td>6 cartes</td>
+                </tr>
+                <tr>
+                    <td>5 Joueurs</td>
+                    <td>15 cartes (par 3)</td>
+                    <td>3 cartes</td>
+                </tr>
+            </table>
+            <p>🔄 <strong>Sens de rotation :</strong> Vers la droite (inverse des aiguilles d'une montre).</p>
+            <p>⚠️ <strong>Le Petit Sec :</strong> La donne est annulée si un joueur possède le 1 d'atout sans aucun
+                autre atout ni l'Excuse.</p>
+        </div>
+
+        <div id="regles" class="section">
+            <h2>Règles Spéciales & Poignées</h2>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>3 Joueurs</th>
+                    <th>4 Joueurs</th>
+                    <th>5 Joueurs</th>
+                    <th>Prime</th>
+                </tr>
+                <tr>
+                    <td>Simple</td>
+                    <td>13 Atouts</td>
+                    <td>10 Atouts</td>
+                    <td>8 Atouts</td>
+                    <td>20 pts</td>
+                </tr>
+                <tr>
+                    <td>Double</td>
+                    <td>15 Atouts</td>
+                    <td>13 Atouts</td>
+                    <td>10 Atouts</td>
+                    <td>30 pts</td>
+                </tr>
+                <tr>
+                    <td>Triple</td>
+                    <td>18 Atouts</td>
+                    <td>15 Atouts</td>
+                    <td>13 Atouts</td>
+                    <td>40 pts</td>
+                </tr>
+            </table>
+            <ul>
+                <li><strong>L'Excuse :</strong> Ne permet pas de faire le pli, elle retourne au camp d'origine.</li>
+                <li><strong>L'Écart :</strong> Interdiction de mettre des Rois ou des Bouts au chien.</li>
+                <li><strong>Le Chien :</strong> Montré à tous (sauf Garde Sans/Contre), puis intégré à l'écart du
+                    preneur.</li>
+            </ul>
+        </div>
+
+        <div id="calcul" class="section">
+            <h2>Calculateur Intelligent</h2>
+            <div class="calc-grid">
+                <div class="calc-box">
+                    <label>Mode :</label>
+                    <select id="nbJoueurs" onchange="toggleJ5()">
+                        <option value="4">4 Joueurs</option>
+                        <option value="5" selected>5 Joueurs</option>
+                    </select>
+                    <label>Preneur :</label>
+                    <select id="preneurIdx">
+                        <option value="1">Joueur 1</option>
+                        <option value="2">Joueur 2</option>
+                        <option value="3">Joueur 3</option>
+                        <option value="4">Joueur 4</option>
+                        <option value="5" class="col-j5">Joueur 5</option>
+                    </select>
+                    <label class="col-j5">Partenaire :</label>
+                    <select id="partenaireIdx" class="col-j5">
+                        <option value="1">Joueur 1</option>
+                        <option value="2">Joueur 2</option>
+                        <option value="3">Joueur 3</option>
+                        <option value="4">Joueur 4</option>
+                        <option value="5">Joueur 5</option>
+                    </select>
+                    <label>Objectif :</label>
+                    <select id="bouts">
+                        <option value="56">0 (56)</option>
+                        <option value="51">1 (51)</option>
+                        <option value="41">2 (41)</option>
+                        <option value="36">3 (36)</option>
+                    </select>
+                </div>
+
+                <div class="calc-box">
+                    <label>Points faits :</label>
+                    <input type="number" id="ptsFaits" step="0.5">
+                    <label>Enchère :</label>
+                    <select id="contrat">
+                        <option value="1">Petite</option>
+                        <option value="2">Garde</option>
+                        <option value="4">Sans</option>
+                        <option value="6">Contre</option>
+                    </select>
+
+                    <label>Petit au Bout :</label>
+                    <div class="radio-group">
+                        <div class="radio-item"><input type="radio" name="pb" id="pb0" value="0"
+                                checked><span>Aucun</span></div>
+                        <div class="radio-item"><input type="radio" name="pb" id="pba" value="10"><span>Attaque</span>
+                        </div>
+                        <div class="radio-item"><input type="radio" name="pb" id="pbd" value="-10"><span>Défense</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-box">
+                    <label>Poignée :</label>
+                    <select id="poigneeVal">
+                        <option value="0">Aucune</option>
+                        <option value="20">Simple</option>
+                        <option value="30">Double</option>
+                        <option value="40">Triple</option>
+                    </select>
+
+                    <label>Camp Poignée :</label>
+                    <div class="radio-group">
+                        <div class="radio-item"><input type="radio" name="cp" id="cpa" value="1"
+                                checked><span>Attaque</span></div>
+                        <div class="radio-item"><input type="radio" name="cp" id="cpd" value="-1"><span>Défense</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-main" onclick="calculerEtInjecter()">Calculer & Injecter</button>
+        </div>
+
+        <div id="scores" class="section">
+            <h2>Feuille de Match</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><input type="text" class="player-name" id="name1" value="J1" onchange="saveData()"></th>
+                        <th><input type="text" class="player-name" id="name2" value="J2" onchange="saveData()"></th>
+                        <th><input type="text" class="player-name" id="name3" value="J3" onchange="saveData()"></th>
+                        <th><input type="text" class="player-name" id="name4" value="J4" onchange="saveData()"></th>
+                        <th class="col-j5"><input type="text" class="player-name" id="name5" value="J5"
+                                onchange="saveData()"></th>
+                    </tr>
+                </thead>
+                <tbody id="score-body"></tbody>
+                <tfoot>
+                    <tr style="background:#222; font-weight:bold;">
+                        <td>Σ</td>
+                        <td id="t1">0</td>
+                        <td id="t2">0</td>
+                        <td id="t3">0</td>
+                        <td id="t4">0</td>
+                        <td id="t5" class="col-j5">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div style="display: flex; gap: 15px;">
+                <button class="btn-main" style="background:#444;" onclick="ajouterLigneManuelle()">Ligne Vide</button>
+                <button class="btn-main" style="background:#b71c1c;" onclick="effacerTout()">Nouvelle Partie</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const dico = {
-            'Chien': 'Les 6 cartes cachées distribuées au début. Le preneur les montre et les remplace par 6 cartes de son jeu (sauf en Garde Sans ou Contre).',
-            'Petit': 'L\'Atout n°1. C\'est la carte la plus basse des atouts, mais elle rapporte gros si elle est emmenée au bout du dernier pli.',
-            'Poignee': 'Annonce faite lorsqu\'un joueur possède beaucoup d\'atouts. Elle permet de marquer des points bonus.',
-            'Excuse': 'La carte avec le joueur de luth. Elle joue le rôle de joker et permet de ne pas perdre un pli important.',
-            'Ecart': 'Les cartes mises de côté par le preneur. On y cache ses points sans y mettre de Rois ni d\'Atouts.',
-            'Atout': 'La force de frappe du jeu. Les 21 cartes qui permettent de "couper" les couleurs classiques.'
-        };
-
-        function afficher(btn, mot) {
-            // 1. On enlève la couleur "active" de tous les boutons
-            document.querySelectorAll('.terme-bouton').forEach(b => b.classList.remove('active'));
-
-            // 2. On ajoute la couleur au bouton cliqué
-            btn.classList.add('active');
-
-            // 3. On affiche la définition avec une petite animation
-            const zone = document.getElementById('contenu-def');
-            zone.style.opacity = 0;
-
-            setTimeout(() => {
-                zone.innerHTML = `<span class="titre-def">${mot}</span> ${dico[mot]}`;
-                zone.style.opacity = 1;
-            }, 150);
+        function openTab(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-menu button').forEach(b => b.classList.remove('active-btn'));
+            document.getElementById('btn-' + id).classList.add('active-btn');
         }
-    </script>
 
+        function toggleJ5() {
+            const nb = document.getElementById('nbJoueurs').value;
+            document.querySelectorAll('.col-j5').forEach(el => el.style.display = (nb == "5") ? "table-cell" : "none");
+            saveData();
+        }
+
+        function calculerEtInjecter() {
+            const nbJ = parseInt(document.getElementById('nbJoueurs').value);
+            const preIdx = parseInt(document.getElementById('preneurIdx').value);
+            const partIdx = parseInt(document.getElementById('partenaireIdx').value);
+            const besoin = parseFloat(document.getElementById('bouts').value);
+            const faits = parseFloat(document.getElementById('ptsFaits').value);
+            const coef = parseInt(document.getElementById('contrat').value);
+            const pbVal = parseInt(document.querySelector('input[name="pb"]:checked').value);
+            const pVal = parseInt(document.getElementById('poigneeVal').value);
+            const pCamp = parseInt(document.querySelector('input[name="cp"]:checked').value);
+
+            if (isNaN(faits)) return alert("Saisissez les points.");
+
+            const diff = faits - besoin;
+            const gagne = diff >= 0;
+            let base = (25 + Math.abs(diff) + Math.abs(pbVal)) * coef;
+
+            let total;
+            if (gagne) {
+                total = base + (pVal * pCamp);
+                if (pbVal < 0) total -= (20 * coef);
+            } else {
+                total = -(base + (pVal * pCamp));
+                if (pbVal > 0) total -= (20 * coef);
+            }
+
+            let res = [0, 0, 0, 0, 0];
+            if (nbJ === 4) {
+                for (let i = 1; i <= 4; i++) res[i - 1] = (i === preIdx) ? total * 3 : -total;
+            } else {
+                const solo = (preIdx === partIdx);
+                for (let i = 1; i <= 5; i++) {
+                    if (i === preIdx) res[i - 1] = solo ? total * 4 : total * 2;
+                    else if (i === partIdx && !solo) res[i - 1] = total;
+                    else res[i - 1] = -total;
+                }
+            }
+            createRow(res);
+            openTab('scores');
+        }
+
+        function createRow(scores) {
+            const body = document.getElementById('score-body');
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${body.rows.length + 1}</td>`;
+            for (let i = 0; i < 5; i++) {
+                let hide = (i === 4 && document.getElementById('nbJoueurs').value == "4") ? "display:none" : "";
+                tr.innerHTML += `<td style="${hide}"><input type="number" class="s${i + 1}" value="${scores[i]}" onchange="majTotaux()"></td>`;
+            }
+            body.appendChild(tr);
+            majTotaux();
+        }
+
+        function majTotaux() {
+            for (let i = 1; i <= 5; i++) {
+                let t = 0;
+                document.querySelectorAll('.s' + i).forEach(inp => t += parseFloat(inp.value) || 0);
+                document.getElementById('t' + i).innerText = t;
+            }
+            saveData();
+        }
+
+        function saveData() {
+            const rows = [];
+            document.querySelectorAll('#score-body tr').forEach(tr => {
+                const data = [];
+                tr.querySelectorAll('input').forEach(inp => data.push(inp.value));
+                rows.push(data);
+            });
+            const names = [];
+            for (let i = 1; i <= 5; i++) names.push(document.getElementById('name' + i).value);
+            localStorage.setItem('tarotSaveFinal', JSON.stringify({ rows, names, nbJ: document.getElementById('nbJoueurs').value }));
+        }
+
+        function loadData() {
+            const save = JSON.parse(localStorage.getItem('tarotSaveFinal'));
+            if (!save) return;
+            document.getElementById('nbJoueurs').value = save.nbJ || "5";
+            save.names.forEach((n, i) => document.getElementById('name' + (i + 1)).value = n);
+            save.rows.forEach(r => createRow(r));
+            toggleJ5();
+        }
+
+        function effacerTout() {
+            if (confirm("Nouvelle partie ?")) { localStorage.clear(); location.reload(); }
+        }
+
+        function ajouterLigneManuelle() { createRow([0, 0, 0, 0, 0]); }
+        window.onload = () => { loadData(); openTab('valeur'); };
+    </script>
 </body>
 
 </html>
